@@ -1,0 +1,33 @@
+package dialtechnologies.utopia;
+
+/**
+ * Created by Ali Elabridi on 6/19/2017.
+ * all the data structures above was extracted from the original structure of Helios
+ * and added some convenience data
+ */
+
+public class CastBallot {
+    // A CastBallot wraps a Ballot and gives more context to it. The JSON version of
+    // this type can be found for a voter with uuid vuuid in election euuid at
+    // https://vote.heliosvoting.org/helios/elections/<euuid>/ballots/<vuuid>/last
+
+    // JSON is the JSON string corresponding to this type. This is not part
+    // of the original JSON structure (obviously).
+    byte[] JSON;
+
+    // CastAt gives the time at which Vote was cast.
+    String CastAt;
+
+    // Vote is the cast Ballot itself.
+    Ballot Vote;
+
+    // VoteHash is the SHA-256 hash of the JSON corresponding to Vote.
+    String VoteHash;
+
+    // VoterHash is the SHA-256 hash of the Voter JSON corresponding to
+    // VoterUuid.
+    String VoterHash;
+
+    // VoterUuid is the unique identifier for the Voter that cast Vote.
+    String VoterUuid;
+}
