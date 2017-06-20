@@ -1,5 +1,7 @@
 package dialtechnologies.utopia;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigInteger;
 
 /**
@@ -10,8 +12,10 @@ public class CipherText {
     // random value, m is a message, and y is Key.PublicValue.
 
     // Alpha = g^r
+    @JsonProperty("alpha")
     BigInteger Alpha;
 
     // Beta = g^m * y^r
+    @JsonProperty("beta")
     BigInteger Beta;
 }

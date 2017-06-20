@@ -1,6 +1,8 @@
 package dialtechnologies.utopia;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Created by Ali Elabridi on 6/19/2017.
  * all the data structures above was extracted from the original structure of Helios
@@ -19,31 +21,39 @@ public class Election {
     // CastURL is the url that can be used to cast ballots; casting ballots
     // is not currently supported by this go package. Ballots must still be
     // cast using the online Helios service.
+    @JsonProperty("cast_url")
     String CastURL;
 
     // Description is a plaintext description of the election.
+    @JsonProperty("description")
     String Description;
 
     // FrozenAt is the date at which the election was fully specified and
     // frozen.
+    @JsonProperty("frozen_at")
     String FrozenAt;
 
     // Name is the full name of the election.
+    @JsonProperty("name")
     String Name;
 
     // Openreg specifies whether or not voters can be added after the
     // election has started.
+    @JsonProperty("openreg")
     Boolean Openreg;
 
     // PublicKey is the ElGamal public key associated with the election.
     // This is the key used to encrypt all ballots and to create and verify
     // proofs.
+    @JsonProperty("public_key")
     Key PublicKey;
 
     // Questions is the list of questions to be voted on in this election.
+    @JsonProperty("questions")
     Question[] Questions;
 
     // ShortName provides a short plaintext name for this election.
+    @JsonProperty("short_name")
     String Shortname;
 
     // UseVoterAliases specifies whether or not voter names are replaced by
@@ -51,18 +61,24 @@ public class Election {
     // identities. This can be used instead of encrypting voter names if the
     // election creators want to be sure that voter identities will remain
     // secret forever, even in the face of future cryptanalytic advances.
+    @JsonProperty("use_voter_aliases")
     Boolean useVoterAliases;
 
     // Uuid is a unique identifier for this election. This uuid is used in
     // the URL of the election itself: the URL of the JSON version of this
     // Election data structure is
     // https://vote.heliosvoting.org/helios/elections/<uuid>
+    @JsonProperty("uuid")
     String Uuid;
 
     // VotersHash provides the hash of the list of voters.
+    @JsonProperty("voters_hash")
     String VotersHash;
 
+    @JsonProperty("voting_ends_at")
     String VotringEndsAt;
+
+    @JsonProperty("voting_starts_at")
     String VotingStartsAt;
 
 }

@@ -1,5 +1,7 @@
 package dialtechnologies.utopia;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigInteger;
 
 /**
@@ -14,16 +16,20 @@ public class Key {
     // a value m is performed as (g^r, g^m * y^r) mod p.
 
     // Generator is the generator element g used in ElGamal encryptions.
+    @JsonProperty("g")
     BigInteger Generator;
 
     // Prime is the prime p for the group used in encryption.
+    @JsonProperty("p")
     BigInteger Prime;
 
     // ExponentPrime is another prime that specifies the group of exponent
     // values in the exponent of Generator. It is used in challenge
     // generation and verification.
+    @JsonProperty("q")
     BigInteger ExponentPrime;
 
     // PublicValue is the public-key value y used to encrypt.
+    @JsonProperty("y")
     BigInteger PublicValue;
 }

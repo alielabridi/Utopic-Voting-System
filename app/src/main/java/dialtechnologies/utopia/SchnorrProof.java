@@ -1,5 +1,7 @@
 package dialtechnologies.utopia;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigInteger;
 
 /**
@@ -11,13 +13,16 @@ public class SchnorrProof {
     // only a single integer rather than a two-part commitment like in ZKProof.
 
     // Challenge is the value sent by the Verifier to the Prover.
+    @JsonProperty("challenge")
     BigInteger Challenge;
 
     // Commitment is a commitment to a random value used in the proof. It
     // is sent from the Prover to the Verifier.
+    @JsonProperty("commitment")
     BigInteger Commitment;
 
     // Response is the response to the Challenge. It is sent from the
     // Prover to the Verifier.
+    @JsonProperty("response")
     BigInteger Response;
 }

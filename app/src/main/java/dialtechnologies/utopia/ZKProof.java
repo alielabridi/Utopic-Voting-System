@@ -1,5 +1,7 @@
 package dialtechnologies.utopia;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigInteger;
 
 /**
@@ -27,7 +29,12 @@ public class ZKProof {
     // used in the encryption, since (with overwhelming probability) the prover
     // wouldn't be able to successfully prove anything else against a random
     // challenge value.
+    @JsonProperty("challenge")
     BigInteger Challenge;
+
+    @JsonProperty("commitment")
     Commit Commitment;
+
+    @JsonProperty("response")
     BigInteger Response;
 }
