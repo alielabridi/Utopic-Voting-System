@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.os.StrictMode;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,6 +28,13 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        ElectionBundle electionBundle = new ElectionBundle("https://vote.heliosvoting.org/helios/elections/","c2786390-5056-11e7-9e2a-c65269258371");
+        System.out.println(electionBundle);
+
     }
 
     @Override
