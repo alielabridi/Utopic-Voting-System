@@ -7,8 +7,10 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
@@ -23,30 +25,42 @@ public class ElectionBundle {
     // election they want to verify. The values are kept as uninterpreted bytes to
     // make sure they don't do round trips through other JSON interpreters.
     Election Election;
-    ArrayList<Voter> Voters = new ArrayList<>();
-    CastBallot Votes[];
+    ArrayList<Voter> Voters;
+    ArrayList<CastBallot> Votes;
     Trustee[] Trustees;
 
     byte[] ElectionData;
-    ArrayList<Byte> Votersdata = new ArrayList<>();
-    byte[][] VotesData;
+    ArrayList<Byte> Votersdata;
+    ArrayList<Byte> VotesData;
     byte[] TrusteesData;
 
     String Host = "";
     String Uuid = "";
     String ElecAddr = Host + Uuid;
 
+    public ElectionBundle(String Host, String Uuid) {
+        Voters = new ArrayList<>();
+        Votes = new ArrayList<>();
+        Votersdata = new ArrayList<>();
+        VotesData = new ArrayList<>();
+        this.Host = Host;
+        this.Uuid = Uuid;
+        this.ElecAddr = this.Host + this.Uuid;
+        Download();
+    }
+
     void Download(){
         ObjectMapper mapper = new ObjectMapper();
         try {
-            InputStream electStream =  new URL("elecAddr").openStream();
-            byte[] ElectionData = IOUtils.toByteArray(electStream);
+            InputStream electStream =  new URL(ElecAddr).openStream();
+            ElectionData = IOUtils.toByteArray(electStream);
             electStream.close();
             Election = mapper.readValue(ElectionData, Election.class);
         } catch (IOException e) {
             System.out.println("Couldn't get the election data:");
             e.printStackTrace();
         }
+        System.out.println(Election);
         //b.Election.Init(b.ElectionData) ??
 
         // The helios server times out if it tries to return too many voters at
@@ -56,12 +70,13 @@ public class ElectionBundle {
         // voters to return, and the after parameter
         // specifies the last received voter.
         String after = "";
-        while(True){
+        while(true){
             Voter[] tempVoters = null;
             byte[] votersJSON = null;
             // Helios accepts "after=" as specifying the beginning of the
             // list.
             String addr = ElecAddr + "/voters/?after=" + after + "&limit=100";
+            System.out.println(addr);
             try {
                 InputStream Voterstream =  new URL(addr).openStream();
                 votersJSON  = IOUtils.toByteArray(Voterstream);
@@ -82,5 +97,64 @@ public class ElectionBundle {
             after = tempVoters[tempVoters.length - 1].Uuid;
             System.out.println("Got " + tempVoters.length + " voters" );
         }
+        System.out.println("There are " + Voters.size() +" voters in this election");
+
+        for(Voter v: Voters){
+            System.out.println("Getting voter " + v.Uuid);
+            CastBallot vote = null;
+            String addr = ElecAddr + "/ballots/" + v.Uuid + "/last";
+            byte[] jsonData = null;
+            try {
+                InputStream VoteStream =  new URL(addr).openStream();
+                jsonData  = IOUtils.toByteArray(VoteStream);
+                VoteStream.close();
+                vote = mapper.readValue(jsonData, CastBallot.class);
+            } catch (IOException e) {
+                System.out.println("Couldn't get the last ballot cast by " + v.Uuid);
+                e.printStackTrace();
+            }
+
+            // Skip ballots that weren't ever cast.
+            if(vote.CastAt.length() == 0) continue;
+
+            vote.JSON = jsonData;
+            Votes.add(vote);
+            for(int i = 0 ; i < jsonData.length ;i++)
+                VotesData.add(jsonData[i]);
+        }
+
+        System.out.println("Collected " + Votes.size() + " cast ballots for the retally");
+
+        String addr = ElecAddr + "/trustees/";
+        byte [] jsonData;
+        try {
+            InputStream TrusteeStream =  new URL(addr).openStream();
+            jsonData  = IOUtils.toByteArray(TrusteeStream);
+            TrusteeStream.close();
+            Trustees = mapper.readValue(jsonData, Trustee[].class);
+            TrusteesData = jsonData;
+        } catch (IOException e) {
+            System.out.println("Couldn't get the list of trustees:");
+            e.printStackTrace();
+        }
+
+
+    }
+
+    @Override
+    public String toString() {
+        return "ElectionBundle{" +
+                "Election=" + Election +
+                ", Voters=" + Voters +
+                ", Votes=" + Votes +
+                ", Trustees=" + Arrays.toString(Trustees) +
+                ", ElectionData=" + Arrays.toString(ElectionData) +
+                ", Votersdata=" + Votersdata +
+                ", VotesData=" + VotesData +
+                ", TrusteesData=" + Arrays.toString(TrusteesData) +
+                ", Host='" + Host + '\'' +
+                ", Uuid='" + Uuid + '\'' +
+                ", ElecAddr='" + ElecAddr + '\'' +
+                '}';
     }
 }
