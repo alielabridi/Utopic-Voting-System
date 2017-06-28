@@ -3,6 +3,7 @@ package dialtechnologies.utopia;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 
 /**
  * Created by Ali Elabridi on 6/20/2017.
@@ -41,4 +42,16 @@ public class Trustee {
     // Uuid is the unique identifier for this Trustee.
     @JsonProperty("uuid")
     String Uuid;
+
+    @Override
+    public String toString() {
+        return "Trustee{" +
+                "DecryptionFactors=" + Arrays.toString(DecryptionFactors) +
+                ", DecryptionProofs=" + Arrays.toString(DecryptionProofs) +
+                ", PoK=" + PoK +
+                ", PublicKey=" + PublicKey +
+                ", PublicKeyHash='" + PublicKeyHash + '\'' +
+                ", Uuid='" + Uuid + '\'' +
+                '}';
+    }
 }

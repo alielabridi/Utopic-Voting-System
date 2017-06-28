@@ -32,4 +32,14 @@ public class Key {
     // PublicValue is the public-key value y used to encrypt.
     @JsonProperty("y")
     BigInteger PublicValue;
+
+    @Override
+    public String toString() {
+        return "Key{" +
+                "Generator=" + Generator +
+                ", Prime=" + Prime +
+                ", ExponentPrime=" + ExponentPrime +
+                ", PublicValue=" + PublicValue +
+                '}';
+    }
 }

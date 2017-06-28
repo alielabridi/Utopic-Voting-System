@@ -34,4 +34,15 @@ public class Voter {
     // VoterType is the type of voter, either "openid" or "email".
     @JsonProperty("voter_type")
     String VoterType;
+
+    @Override
+    public String toString() {
+        return "Voter{" +
+                "Name='" + Name + '\'' +
+                ", Uuid='" + Uuid + '\'' +
+                ", VoterID='" + VoterID + '\'' +
+                ", VoterIDHash='" + VoterIDHash + '\'' +
+                ", VoterType='" + VoterType + '\'' +
+                '}';
+    }
 }

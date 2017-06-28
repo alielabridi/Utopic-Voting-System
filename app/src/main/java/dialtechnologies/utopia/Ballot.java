@@ -2,6 +2,8 @@ package dialtechnologies.utopia;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Arrays;
+
 /**
  * Created by Ali Elabridi on 6/19/2017.
  * all the data structures above was extracted from the original structure of Helios
@@ -23,4 +25,13 @@ public class Ballot {
     // apply to.
     @JsonProperty("election_uuid")
     String ElectionUuid;
+
+    @Override
+    public String toString() {
+        return "Ballot{" +
+                "Answers=" + Arrays.toString(Answers) +
+                ", ElectionHash='" + ElectionHash + '\'' +
+                ", ElectionUuid='" + ElectionUuid + '\'' +
+                '}';
+    }
 }

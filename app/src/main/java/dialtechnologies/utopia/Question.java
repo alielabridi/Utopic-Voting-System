@@ -2,6 +2,8 @@ package dialtechnologies.utopia;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Arrays;
+
 /**
  * Created by Ali Elabridi on 6/19/2017.
  * all the data structures above was extracted from the original structure of Helios
@@ -53,4 +55,19 @@ public class Question {
     // value here is 'homomorphic'.
     @JsonProperty("tally_type")
     String TallyType;
+
+    @Override
+    public String toString() {
+        return "Question{" +
+                "AnswerUrls=" + Arrays.toString(AnswerUrls) +
+                ", Answers=" + Arrays.toString(Answers) +
+                ", ChoiceType='" + ChoiceType + '\'' +
+                ", Max=" + Max +
+                ", Min=" + Min +
+                ", Question='" + Question + '\'' +
+                ", ResultType='" + ResultType + '\'' +
+                ", ShortName='" + ShortName + '\'' +
+                ", TallyType='" + TallyType + '\'' +
+                '}';
+    }
 }

@@ -25,4 +25,13 @@ public class SchnorrProof {
     // Prover to the Verifier.
     @JsonProperty("response")
     BigInteger Response;
+
+    @Override
+    public String toString() {
+        return "SchnorrProof{" +
+                "Challenge=" + Challenge +
+                ", Commitment=" + Commitment +
+                ", Response=" + Response +
+                '}';
+    }
 }

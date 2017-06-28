@@ -37,4 +37,13 @@ public class ZKProof {
 
     @JsonProperty("response")
     BigInteger Response;
+
+    @Override
+    public String toString() {
+        return "ZKProof{" +
+                "Challenge=" + Challenge +
+                ", Commitment=" + Commitment +
+                ", Response=" + Response +
+                '}';
+    }
 }

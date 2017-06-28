@@ -18,4 +18,12 @@ public class CipherText {
     // Beta = g^m * y^r
     @JsonProperty("beta")
     BigInteger Beta;
+
+    @Override
+    public String toString() {
+        return "CipherText{" +
+                "Alpha=" + Alpha +
+                ", Beta=" + Beta +
+                '}';
+    }
 }

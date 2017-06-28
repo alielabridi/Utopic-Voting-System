@@ -4,6 +4,7 @@ package dialtechnologies.utopia;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 
 /**
  * Created by Ali Elabridi on 6/19/2017.
@@ -58,4 +59,14 @@ public class EncryptedAnswer {
     @JsonProperty("randomness")
     BigInteger Randomness;
 
+    @Override
+    public String toString() {
+        return "EncryptedAnswer{" +
+                "Choices=" + Arrays.toString(Choices) +
+                ", IndividualProofs=" + Arrays.toString(IndividualProofs) +
+                ", OverallProof=" + Arrays.toString(OverallProof) +
+                ", Answer=" + Arrays.toString(Answer) +
+                ", Randomness=" + Randomness +
+                '}';
+    }
 }

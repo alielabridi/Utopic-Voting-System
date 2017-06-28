@@ -2,6 +2,8 @@ package dialtechnologies.utopia;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Arrays;
+
 /**
  * Created by Ali Elabridi on 6/19/2017.
  * all the data structures above was extracted from the original structure of Helios
@@ -37,4 +39,16 @@ public class CastBallot {
     // VoterUuid is the unique identifier for the Voter that cast Vote.
     @JsonProperty("voter_uuid")
     String VoterUuid;
+
+    @Override
+    public String toString() {
+        return "CastBallot{" +
+                "JSON=" + Arrays.toString(JSON) +
+                ", CastAt='" + CastAt + '\'' +
+                ", Vote=" + Vote +
+                ", VoteHash='" + VoteHash + '\'' +
+                ", VoterHash='" + VoterHash + '\'' +
+                ", VoterUuid='" + VoterUuid + '\'' +
+                '}';
+    }
 }

@@ -19,4 +19,12 @@ public class Commit {
     // B is the second part of a commitment: B = y^w mod p.
     @JsonProperty("b")
     BigInteger B;
+
+    @Override
+    public String toString() {
+        return "Commit{" +
+                "A=" + A +
+                ", B=" + B +
+                '}';
+    }
 }
