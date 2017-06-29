@@ -43,7 +43,7 @@ public class CastBallot {
     @Override
     public String toString() {
         return "CastBallot{" +
-                "JSON=" + Arrays.toString(JSON) +
+                "JSON=" + new String(JSON) +
                 ", CastAt='" + CastAt + '\'' +
                 ", Vote=" + Vote +
                 ", VoteHash='" + VoteHash + '\'' +

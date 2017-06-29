@@ -86,7 +86,7 @@ public class Election {
     @Override
     public String toString() {
         return "Election{" +
-                "JSON=" + Arrays.toString(JSON) +
+                "JSON=" + new String(JSON) +
                 ", ElectionHash='" + ElectionHash + '\'' +
                 ", CastURL='" + CastURL + '\'' +
                 ", Description='" + Description + '\'' +
