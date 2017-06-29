@@ -1,5 +1,6 @@
 package dialtechnologies.utopia;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -8,6 +9,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * and added some convenience data
  */
 public class Voter {
+
+    //The election at which the Voter has voted
+    @JsonProperty("election_uuid")
+    String election_uuid;
+
     // Name is the name of the voter. This can be an alias like "V155", if
     // voter aliases are used in this Election.
     @JsonProperty("name")
