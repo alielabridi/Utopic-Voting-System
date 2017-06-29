@@ -60,6 +60,7 @@ public class ElectionBundle {
             System.out.println("Couldn't get the election data:");
             e.printStackTrace();
         }
+        System.out.println(ElecAddr);
         System.out.println(Election);
         //b.Election.Init(b.ElectionData) ??
 
@@ -103,6 +104,7 @@ public class ElectionBundle {
             System.out.println("Getting voter " + v.Uuid);
             CastBallot vote = null;
             String addr = ElecAddr + "/ballots/" + v.Uuid + "/last";
+            System.out.println(addr);
             byte[] jsonData = null;
             try {
                 InputStream VoteStream =  new URL(addr).openStream();
@@ -126,6 +128,7 @@ public class ElectionBundle {
         System.out.println("Collected " + Votes.size() + " cast ballots for the retally");
 
         String addr = ElecAddr + "/trustees/";
+        System.out.println(addr);
         byte [] jsonData;
         try {
             InputStream TrusteeStream =  new URL(addr).openStream();
@@ -139,6 +142,8 @@ public class ElectionBundle {
         }
 
 
+
+
     }
 
     @Override
@@ -148,10 +153,6 @@ public class ElectionBundle {
                 ", Voters=" + Voters +
                 ", Votes=" + Votes +
                 ", Trustees=" + Arrays.toString(Trustees) +
-                ", ElectionData=" + Arrays.toString(ElectionData) +
-                ", Votersdata=" + Votersdata +
-                ", VotesData=" + VotesData +
-                ", TrusteesData=" + Arrays.toString(TrusteesData) +
                 ", Host='" + Host + '\'' +
                 ", Uuid='" + Uuid + '\'' +
                 ", ElecAddr='" + ElecAddr + '\'' +
