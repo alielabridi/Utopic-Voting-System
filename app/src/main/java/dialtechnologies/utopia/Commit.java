@@ -13,11 +13,11 @@ public class Commit {
     // by sending an instance of a Commit.
 
     // A is the first part of a commitment: A = g^w mod p.
-    @JsonProperty("a")
+    @JsonProperty("A")
     BigInteger A;
 
     // B is the second part of a commitment: B = y^w mod p.
-    @JsonProperty("b")
+    @JsonProperty("B")
     BigInteger B;
 
     @Override
