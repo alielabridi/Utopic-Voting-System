@@ -14,6 +14,9 @@ import java.util.Arrays;
 public class Trustee {
     // A Trustee represents the public information for one of the keys used to
     // tally and decrypt the election results.
+    // email of the trustee
+    @JsonProperty("email")
+    String email;
 
     // DecryptionFactors are the partial decryptions of each of the
     // homomorphic tally results.
