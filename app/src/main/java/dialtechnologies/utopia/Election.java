@@ -78,7 +78,7 @@ public class Election {
     String VotersHash;
 
     @JsonProperty("voting_ends_at")
-    String VotringEndsAt;
+    String VotingEndsAt;
 
     @JsonProperty("voting_starts_at")
     String VotingStartsAt;
@@ -99,7 +99,7 @@ public class Election {
                 ", useVoterAliases=" + useVoterAliases +
                 ", Uuid='" + Uuid + '\'' +
                 ", VotersHash='" + VotersHash + '\'' +
-                ", VotringEndsAt='" + VotringEndsAt + '\'' +
+                ", VotringEndsAt='" + VotingEndsAt + '\'' +
                 ", VotingStartsAt='" + VotingStartsAt + '\'' +
                 '}';
     }
