@@ -47,7 +47,6 @@ public class Voter {
                 + "\"election_uuid\": \"" + election_uuid + "\""
                 + ", \"name\": \"" + name + "\""
                 + ", \"uuid\": \"" + uuid + "\""
-                + ", \"voter_id\": \"" + voter_id + "\""
                 + ", \"voter_id_hash\": \"" + voter_id_hash + "\""
                 + ", \"voter_type\": \"" + voter_type + "\""
                 + "}";
