@@ -63,8 +63,8 @@ public class EncryptedAnswer {
     public String toString() {
         return "{"
                 + "\"choices\": " + Arrays.toString(choices)
-                + ", \"individual_proofs\": " + Arrays.toString(individual_proofs)
+                + ", \"individual_proofs\": " + Arrays.deepToString(individual_proofs)
                 + ", \"overall_proof\": " + Arrays.toString(overall_proof)
-                + " }";
+                + "}";
     }
 }
