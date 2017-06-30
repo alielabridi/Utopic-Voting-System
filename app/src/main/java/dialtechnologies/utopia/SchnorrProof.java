@@ -14,24 +14,24 @@ public class SchnorrProof {
 
     // Challenge is the value sent by the Verifier to the Prover.
     @JsonProperty("challenge")
-    BigInteger Challenge;
+    BigInteger challenge;
 
     // Commitment is a commitment to a random value used in the proof. It
     // is sent from the Prover to the Verifier.
     @JsonProperty("commitment")
-    BigInteger Commitment;
+    BigInteger commitment;
 
     // Response is the response to the Challenge. It is sent from the
     // Prover to the Verifier.
     @JsonProperty("response")
-    BigInteger Response;
+    BigInteger response;
 
     @Override
     public String toString() {
-        return "SchnorrProof{" +
-                "Challenge=" + Challenge +
-                ", Commitment=" + Commitment +
-                ", Response=" + Response +
-                '}';
+        return "{"
+                + "\"challenge\": " + challenge
+                + ", \"commitment\": " + commitment
+                + ", \"response\": " + response
+                + "}";
     }
 }

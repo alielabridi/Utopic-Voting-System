@@ -30,20 +30,20 @@ public class ZKProof {
     // wouldn't be able to successfully prove anything else against a random
     // challenge value.
     @JsonProperty("challenge")
-    BigInteger Challenge;
+    BigInteger challenge;
 
     @JsonProperty("commitment")
-    Commit Commitment;
+    Commit commitment;
 
     @JsonProperty("response")
-    BigInteger Response;
+    BigInteger response;
 
     @Override
     public String toString() {
-        return "ZKProof{" +
-                "Challenge=" + Challenge +
-                ", Commitment=" + Commitment +
-                ", Response=" + Response +
-                '}';
+        return "{"
+                + "\"challenge\": " + challenge
+                + ", \"commitment\": " + commitment
+                + ", \"response\": " + response
+                + "}";
     }
 }

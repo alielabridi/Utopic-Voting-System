@@ -18,7 +18,7 @@ public class EncryptedAnswer {
     // Choices is a list of votes for each choice in a Question. Each choice
     // is encrypted with the Election.PublicKey.
     @JsonProperty("choices")
-    CipherText[] Choices;
+    CipherText[] choices;
 
     // IndividualProofs gives a proof that each corresponding entry in
     // Choices is well formed: this means that it is either 0 or 1. So, each
@@ -32,7 +32,7 @@ public class EncryptedAnswer {
     // the Fiat-Shamir heuristic as described in the comment for ZKProof.
     //ZKProof[] DisjunctiveZKProof;
     @JsonProperty("individual_proofs")
-    ZKProof[][] IndividualProofs;
+    ZKProof[][] individual_proofs;
 
     // OverallProof shows that the set of choices sum to an acceptable
     // value: one that falls between Question.Min and Question.Max. If there
@@ -44,29 +44,27 @@ public class EncryptedAnswer {
     // the Fiat-Shamir heuristic as described in the comment for ZKProof.
     //ZKProof[] DisjunctiveZKProof;
     @JsonProperty("overall_proof")
-    ZKProof[] OverallProof;
+    ZKProof[] overall_proof;
 
     // Answer is the actual answer that is supposed to be encrypted in
     // EncryptedAnswer. This is not serialized/deserialized if not present.
     // This must only be present in a spoiled ballot because SECRECY.
     @JsonProperty("answer")
-    long Answer[];
+    long answer[];
 
     // Randomness is the actual randomness that is supposed to have been
     // used to encrypt Answer in EncryptedAnswer. This is not serialized or
     // deserialized if not present. This must only be present in a spoiled
     // ballot because SECRECY.
     @JsonProperty("randomness")
-    BigInteger Randomness;
+    BigInteger randomness;
 
     @Override
     public String toString() {
-        return "EncryptedAnswer{" +
-                "Choices=" + Arrays.toString(Choices) +
-                ", IndividualProofs=" + Arrays.toString(IndividualProofs) +
-                ", OverallProof=" + Arrays.toString(OverallProof) +
-                ", Answer=" + Arrays.toString(Answer) +
-                ", Randomness=" + Randomness +
-                '}';
+        return "{"
+                + "\"choices\": " + Arrays.toString(choices)
+                + ", \"individual_proofs\": " + Arrays.toString(individual_proofs)
+                + ", \"overall_proof\": " + Arrays.toString(overall_proof)
+                + " }";
     }
 }

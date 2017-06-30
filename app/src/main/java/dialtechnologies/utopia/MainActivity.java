@@ -10,6 +10,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.os.StrictMode;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,12 +33,12 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        //very bad I should change it!!!
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-        ElectionBundle electionBundle = new ElectionBundle("https://vote.heliosvoting.org/helios/elections/","c2786390-5056-11e7-9e2a-c65269258371");
-        System.out.println(electionBundle);
+
 
     }
 

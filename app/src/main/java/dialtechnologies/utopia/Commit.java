@@ -22,9 +22,9 @@ public class Commit {
 
     @Override
     public String toString() {
-        return "Commit{" +
-                "A=" + A +
-                ", B=" + B +
-                '}';
+        return "{"
+                + "\"A\": " + A
+                + ", \"B\": " + B
+                + "}";
     }
 }

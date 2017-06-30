@@ -21,34 +21,33 @@ public class CastBallot {
 
     // CastAt gives the time at which Vote was cast.
     @JsonProperty("cast_at")
-    String CastAt;
+    String cast_at;
 
     // Vote is the cast Ballot itself.
     @JsonProperty("vote")
-    Ballot Vote;
+    Ballot vote;
 
     // VoteHash is the SHA-256 hash of the JSON corresponding to Vote.
     @JsonProperty("vote_hash")
-    String VoteHash;
+    String vote_hash;
 
     // VoterHash is the SHA-256 hash of the Voter JSON corresponding to
     // VoterUuid.
     @JsonProperty("voter_hash")
-    String VoterHash;
+    String voter_hash;
 
     // VoterUuid is the unique identifier for the Voter that cast Vote.
     @JsonProperty("voter_uuid")
-    String VoterUuid;
+    String voter_uuid;
 
     @Override
     public String toString() {
-        return "CastBallot{" +
-                "JSON=" + new String(JSON) +
-                ", CastAt='" + CastAt + '\'' +
-                ", Vote=" + Vote +
-                ", VoteHash='" + VoteHash + '\'' +
-                ", VoterHash='" + VoterHash + '\'' +
-                ", VoterUuid='" + VoterUuid + '\'' +
-                '}';
+        return "{"
+                + "\"cast_at\": \"" + cast_at + "\""
+                + ", \"vote\": " + vote
+                + ", \"vote_hash\": \"" + vote_hash + "\""
+                + ", \"voter_hash\": \"" + voter_hash + "\""
+                + ", \"voter_uuid\": \"" + voter_uuid + "\""
+                + "}";
     }
 }

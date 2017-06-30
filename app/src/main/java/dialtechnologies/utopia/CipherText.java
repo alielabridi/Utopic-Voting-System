@@ -13,17 +13,17 @@ public class CipherText {
 
     // Alpha = g^r
     @JsonProperty("alpha")
-    BigInteger Alpha;
+    BigInteger alpha;
 
     // Beta = g^m * y^r
     @JsonProperty("beta")
-    BigInteger Beta;
+    BigInteger beta;
 
     @Override
     public String toString() {
-        return "CipherText{" +
-                "Alpha=" + Alpha +
-                ", Beta=" + Beta +
-                '}';
+        return "{"
+                + "\"alpha\": " + alpha
+                + ", \"beta\": " + beta
+                + "}";
     }
 }

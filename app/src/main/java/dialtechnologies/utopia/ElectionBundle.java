@@ -51,6 +51,7 @@ public class ElectionBundle {
 
     void Download(){
         ObjectMapper mapper = new ObjectMapper();
+        System.out.println(ElecAddr);
         try {
             InputStream electStream =  new URL(ElecAddr).openStream();
             ElectionData = IOUtils.toByteArray(electStream);
@@ -60,8 +61,6 @@ public class ElectionBundle {
             System.out.println("Couldn't get the election data:");
             e.printStackTrace();
         }
-        System.out.println(ElecAddr);
-        System.out.println(Election);
         //b.Election.Init(b.ElectionData) ??
 
         // The helios server times out if it tries to return too many voters at
@@ -88,22 +87,22 @@ public class ElectionBundle {
                 e.printStackTrace();
             }
             // Helios returns an empty array when there are no more voters.
-            if(tempVoters.length == 0) break;
+            if(tempVoters == null || tempVoters.length == 0) break;
 
             for(int i = 0; i < tempVoters.length; i++)
                 Voters.add(tempVoters[i]);
             for(int i = 0; i < votersJSON.length; i++)
                 Votersdata.add(votersJSON[i]);
 
-            after = tempVoters[tempVoters.length - 1].Uuid;
+            after = tempVoters[tempVoters.length - 1].uuid;
             System.out.println("Got " + tempVoters.length + " voters" );
         }
         System.out.println("There are " + Voters.size() +" voters in this election");
 
         for(Voter v: Voters){
-            System.out.println("Getting voter " + v.Uuid);
+            System.out.println("Getting voter " + v.uuid);
             CastBallot vote = null;
-            String addr = ElecAddr + "/ballots/" + v.Uuid + "/last";
+            String addr = ElecAddr + "/ballots/" + v.uuid + "/last";
             System.out.println(addr);
             byte[] jsonData = null;
             try {
@@ -112,12 +111,12 @@ public class ElectionBundle {
                 VoteStream.close();
                 vote = mapper.readValue(jsonData, CastBallot.class);
             } catch (IOException e) {
-                System.out.println("Couldn't get the last ballot cast by " + v.Uuid);
+                System.out.println("Couldn't get the last ballot cast by " + v.uuid);
                 e.printStackTrace();
             }
 
             // Skip ballots that weren't ever cast.
-            if(vote.CastAt.length() == 0) continue;
+            if(vote.cast_at.length() == 0) continue;
 
             vote.JSON = jsonData;
             Votes.add(vote);
@@ -143,19 +142,44 @@ public class ElectionBundle {
 
 
 
-
     }
 
-    @Override
-    public String toString() {
-        return "ElectionBundle{" +
-                "Election=" + Election +
-                ", Voters=" + Voters +
-                ", Votes=" + Votes +
-                ", Trustees=" + Arrays.toString(Trustees) +
-                ", Host='" + Host + '\'' +
-                ", Uuid='" + Uuid + '\'' +
-                ", ElecAddr='" + ElecAddr + '\'' +
-                '}';
+
+    static public <E> String convertToArray(List<E> list){
+        StringBuilder builder = new StringBuilder();
+        builder.append("[");
+        for(int i=0;i<list.size();i++){
+            if(list.get(i) instanceof String) builder.append("\"");
+            builder.append(list.get(i).toString());
+            if(list.get(i) instanceof String) builder.append("\"");
+            builder.append(", ");
+        }
+        if(builder.length() > 1){
+            builder.deleteCharAt(builder.length() - 2);
+            builder.deleteCharAt(builder.length() - 1);
+        }
+        builder.append("]");
+
+        return builder.toString();
     }
+
+    static public <E> String convertToArray(E[] list){
+        StringBuilder builder = new StringBuilder();
+        builder.append("[");
+        for(int i=0;i<list.length;i++){
+            if(list[i] instanceof String) builder.append("\"");
+            builder.append(list[i].toString());
+            if(list[i] instanceof String) builder.append("\"");
+            builder.append(", ");
+        }
+        if(builder.length() > 1){
+            builder.deleteCharAt(builder.length() - 2);
+            builder.deleteCharAt(builder.length() - 1);
+        }
+        builder.append("]");
+
+        return builder.toString();
+    }
+
+
 }

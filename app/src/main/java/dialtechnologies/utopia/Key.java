@@ -17,29 +17,29 @@ public class Key {
 
     // Generator is the generator element g used in ElGamal encryptions.
     @JsonProperty("g")
-    BigInteger Generator;
+    BigInteger g;
 
     // Prime is the prime p for the group used in encryption.
     @JsonProperty("p")
-    BigInteger Prime;
+    BigInteger p;
 
     // ExponentPrime is another prime that specifies the group of exponent
     // values in the exponent of Generator. It is used in challenge
     // generation and verification.
     @JsonProperty("q")
-    BigInteger ExponentPrime;
+    BigInteger q;
 
     // PublicValue is the public-key value y used to encrypt.
     @JsonProperty("y")
-    BigInteger PublicValue;
+    BigInteger y;
 
     @Override
     public String toString() {
-        return "Key{" +
-                "Generator=" + Generator +
-                ", Prime=" + Prime +
-                ", ExponentPrime=" + ExponentPrime +
-                ", PublicValue=" + PublicValue +
-                '}';
+        return "{"
+                + "\"g\": " + g
+                + ", \"p\": " + p
+                + ", \"q\": " + q
+                + ", \"y\": " + y
+                + "}";
     }
 }
