@@ -53,6 +53,13 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         NullValsWithoutQuotesFromParsedJson = electionBundle.Votes.toString().replaceAll("\"null\"", "null");
         System.out.println(BigIntsWithoutQuotesFromJson);
         System.out.println(NullValsWithoutQuotesFromParsedJson);
+        //since we retrieve votes one by one and therefore the json is not an array of votes when
+        //retrieve from the website, we need to delete the two first braquets
+        int length = NullValsWithoutQuotesFromParsedJson.length();
+        NullValsWithoutQuotesFromParsedJson = NullValsWithoutQuotesFromParsedJson.substring(1,length-1);
+        for(i = length-100; i < NullValsWithoutQuotesFromParsedJson.length();i++)
+            System.out.print(NullValsWithoutQuotesFromParsedJson.toCharArray()[i]);
+        System.out.println("");
         assertEquals(BigIntsWithoutQuotesFromJson, NullValsWithoutQuotesFromParsedJson);
         System.out.println(BigIntsWithoutQuotesFromJson.equals(NullValsWithoutQuotesFromParsedJson));
 
