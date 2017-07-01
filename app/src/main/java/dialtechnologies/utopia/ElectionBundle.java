@@ -3,6 +3,7 @@ package dialtechnologies.utopia;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -61,7 +62,8 @@ public class ElectionBundle {
             System.out.println("Couldn't get the election data:");
             e.printStackTrace();
         }
-        //b.Election.Init(b.ElectionData) ??
+        Election.ElectionHash = android.util.Base64.encodeToString(org.apache.commons.codec.digest.DigestUtils.sha256(ElectionData),android.util.Base64.DEFAULT);
+        //System.out.println("Election Hash" + Election.ElectionHash);
 
         // The helios server times out if it tries to return too many voters at
         // once.  This can be a problem for large elections (like the annual
