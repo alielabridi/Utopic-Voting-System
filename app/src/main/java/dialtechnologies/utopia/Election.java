@@ -88,6 +88,9 @@ public class Election {
     ArrayList<String> fingerprints = new ArrayList<>();
     CipherText[][] tallies;
 
+    // AccumulateTallies combines the ballots homomorphically for each question and answer
+    // to get an encrypted tally for each. It also compute the ballot tracking numbers for
+    // each of the votes.
     Boolean AccumulateTallies(CastBallot[] votes){
         tallies = new CipherText[questions.length][];
         for(int i = 0; i < questions.length; i++){
