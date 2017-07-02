@@ -38,6 +38,53 @@ public class ZKProof {
     @JsonProperty("response")
     BigInteger response;
 
+    // Verify checks the Chaum-Pedersen zero-knowledge proof for the
+    // well-formedness of a Ciphertext, given the purported plaintext and the public
+    // key. Note that a ZKProof might pass verification and yet be a simulated (i.e.,
+    // fake) proof in a sequence of ZKProof values that make up a
+    // DisjunctiveZKProof. This is the case because ZKProof is merely the transcript
+    // of a sigma protocol. And this is OK because at least one proof in a
+    // DisjunctiveZKProof must be real, as checked by Verify for DisjunctiveZKProof.
+    Boolean verify(CipherText cipherText, BigInteger plaintext, Key publickey){
+        // g^response mod p
+        BigInteger lhs = BigInteger.ONE;
+        lhs = lhs.multiply(publickey.g).modPow(plaintext, publickey.p);
+        // alpha^challenge mod p
+        BigInteger rhs = BigInteger.ONE;
+        rhs = rhs.multiply(cipherText.alpha).modPow(challenge, publickey.p);
+        // A * alpha^challenge mod p
+        rhs = rhs.multiply(commitment.A);
+        rhs = rhs.mod(publickey.p);
+        if(lhs.compareTo(rhs) != 0){
+            System.out.println("The first proof verification check failed");
+            return Boolean.FALSE;
+        }
+
+        // g^plaintext mod p
+        BigInteger BetaOverM = BigInteger.ONE;
+        BetaOverM = BetaOverM.multiply(publickey.g).modPow(plaintext, publickey.p);
+        // 1/g^plaintext mod p
+        BetaOverM = BetaOverM.modInverse(publickey.p);
+        // beta/g^plaintext mod p
+        BetaOverM = BetaOverM.multiply(cipherText.beta);
+        BetaOverM = BetaOverM.mod(publickey.p);
+
+        // y^response mod p
+        lhs = BigInteger.ONE;
+        lhs.multiply(publickey.y).modPow(response,publickey.p);
+        // (beta/g^plaintext)^challenge mod p
+        rhs = BigInteger.ONE;
+        rhs = rhs.multiply(BetaOverM).modPow(challenge, publickey.p);
+        // B * (beta/g^plaintext)^challenge mod p
+        rhs = rhs.multiply(commitment.B);
+        rhs = rhs.mod(publickey.p);
+        if(lhs.compareTo(rhs) != 0){
+            System.out.println("The second proof check failed");
+            return Boolean.FALSE;
+        }
+        return Boolean.TRUE;
+    }
+
     @Override
     public String toString() {
         return "{"
