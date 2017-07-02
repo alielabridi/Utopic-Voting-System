@@ -1,9 +1,15 @@
 package dialtechnologies.utopia;
 
 
+import android.text.TextUtils;
+import android.text.style.TtsSpan;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import org.apache.commons.codec.binary.Hex;
+
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -90,8 +96,48 @@ public class EncryptedAnswer {
 
         return Boolean.TRUE;
     }
-
+    // A DisjunctiveZKProof is a sequence of ZKProofs for values Min through Max
+    // (usually corresponding to Question.Min and Question.Max). Only one of the
+    // values is a real ZKProof; the others are simulated. It is constructed using
+    // the Fiat-Shamir heuristic as described in the comment for ZKProof.
+    // Verify checks the validity of a sequence of ZKProof values that are supposed
+    // to encode proofs that the ciphertext is a value in [min, max].
     Boolean VerifyDisjunctiveZKProof(ZKProof[] proof, int min, int max, CipherText prod, Key PublicKey){
+        // The computed challenge is the sum mod q of all the challenges, as
+        // described in the documentation of ZKProof. Since it's a sum, it must
+        // start at 0.
+        BigInteger computedChall = BigInteger.ZERO;
+        ArrayList<String> commitVals = new ArrayList<>();
+        Integer val = min;
+        int total = max - min + 1;
+        if(total != proof.length){
+            System.out.println("Wrong number of proofs provided to VerifyDisjunctiveProof: expected " + total + "  but saw " + proof.length);
+            return Boolean.FALSE;
+        }
+        for(int i = 0 ; i < proof.length; i++){
+            BigInteger plaintext = new BigInteger(val.toString());
+            if(!proof[i].verify(prod, plaintext, PublicKey)){
+                System.out.println("Couldn't verify the proof for plaintext: " + plaintext.toString());
+                return Boolean.FALSE;
+            }
+            // Accumulate the homomorphic product to sum the challenge
+            // values.
+            computedChall = computedChall.add(proof[i].challenge);
+
+            commitVals.add(proof[i].commitment.A.toString());
+            commitVals.add(proof[i].commitment.B.toString());
+        }
+        computedChall = computedChall.mod(PublicKey.q);
+        // Check that the challenge was well-formed.
+        String stringtohash = TextUtils.join(",", commitVals);
+        byte[] hashedcommits = org.apache.commons.codec.digest.DigestUtils.sha1(stringtohash.getBytes());
+
+        /*very risky to double check*/
+        if(!Arrays.equals(computedChall.toByteArray(),hashedcommits)){
+            System.out.println("The computed challenge did not match the hashed challenge");
+            return Boolean.FALSE;
+        }
+        return Boolean.TRUE;
 
     }
 
