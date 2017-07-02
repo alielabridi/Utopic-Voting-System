@@ -4,6 +4,7 @@ package dialtechnologies.utopia;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -84,9 +85,11 @@ public class Election {
     @JsonProperty("voting_starts_at")
     String voting_starts_at;
 
-    void AccumulateTallies(CastBallot[] votes){
-        CipherText[][] tallies = new CipherText[questions.length][];
-        String[] fingerprints = new String[votes.length];
+    ArrayList<String> fingerprints = new ArrayList<>();
+    CipherText[][] tallies;
+
+    Boolean AccumulateTallies(CastBallot[] votes){
+        tallies = new CipherText[questions.length][];
         for(int i = 0; i < questions.length; i++){
             tallies[i] = new CipherText[questions[i].answers.length];
             for(int j = 0 ; j < questions[i].answers.length; j++){
@@ -96,11 +99,32 @@ public class Election {
                 tallies[i][j].beta = BigInteger.ONE;
             }
         }
-
+        /*do the parralelzation here!!!*/
         // Verify the votes and accumulate the tallies.
+        Boolean resp = Boolean.TRUE;
         for(CastBallot v : votes){
+            System.out.println("Verifying vote from " + v.voter_uuid);
+            resp &= v.Verify(this);
+            String fingerprint = android.util.Base64.encodeToString(org.apache.commons.codec.digest.DigestUtils.sha256(v.JSON), android.util.Base64.DEFAULT);
+            //deleting the equal of base64
+            fingerprint = fingerprint.substring(0,fingerprint.length()-1);
+            //fingerprints.add(android.util.Base64.encodeToString(org.apache.commons.codec.digest.DigestUtils.sha256(v.JSON), android.util.Base64.DEFAULT));
+            fingerprints.add(fingerprint);
 
+            for(int i = 0; i < questions.length ; i++){
+                for(int j = 0; j < questions[i].answers.length; j++){
+                    // tally_j_k = (tally_j_k * ballot_i_j_k) mod p
+                    tallies[i][j].MulCipherTexts(v.vote.answers[i].choices[j], this.public_key.p);
+                }
+            }
         }
+
+        //find another way to better place this!
+        if(!resp){
+            System.out.println("Vote verification failed");
+            return Boolean.FALSE;
+        }
+        return Boolean.TRUE;
     }
 
     @Override
