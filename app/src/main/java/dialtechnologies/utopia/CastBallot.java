@@ -40,6 +40,25 @@ public class CastBallot {
     @JsonProperty("voter_uuid")
     String voter_uuid;
 
+    // Verify checks the hash of the election against the hash stored in this
+    // Ballot and checks the DisjunctiveZKProofs of the Answer values against the
+    // Question.Min and Question.Max.
+    Boolean Verify(Election election){
+        if(election.ElectionHash != vote_hash){
+            System.out.println("The election hash in the vote did not match the election");
+            return Boolean.FALSE;
+        }
+
+        for(int i = 0 ; i < vote.answers.length; i++){
+            Question q = election.questions[i];
+            if(!vote.answers[i].VerifyAnswer(q.min, q.max, q.choice_type, election.public_key)){
+                System.out.println("Answer " + i + " did not pass verification\n");
+                return Boolean.FALSE;
+            }
+        }
+        return Boolean.TRUE;
+    }
+
     @Override
     public String toString() {
         return "{"
