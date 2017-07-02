@@ -71,7 +71,7 @@ public class EncryptedAnswer {
         for(int i = 0 ; i < choices.length; i++){
             ZKProof[] proof = individual_proofs[i];
             // Each answer can only be 0 or 1.
-            if(!VerifyDisjunctiveZKProof(proof, Min, Max, prod, PublicKey)){
+            if(!VerifyDisjunctiveZKProof(proof, 0, 1, prod, PublicKey)){
                 System.out.println("The proof for choice " + i + " did not pass verification");
                 return Boolean.FALSE;
             }
