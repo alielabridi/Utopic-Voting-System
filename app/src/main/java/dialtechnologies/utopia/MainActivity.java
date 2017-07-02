@@ -38,8 +38,13 @@ public class MainActivity extends AppCompatActivity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-
-
+        ElectionBundle electionBundle = new ElectionBundle("https://vote.heliosvoting.org/helios/elections/","c2786390-5056-11e7-9e2a-c65269258371");
+        //System.out.println("length" + electionBundle.ElectionData.length);
+        System.out.println(electionBundle.Election);
+        System.out.println(electionBundle.Voters);
+        System.out.println(electionBundle.Votes);
+        System.out.println(Arrays.toString(electionBundle.Trustees));
+        System.out.println(electionBundle.Election.ElectionHash);
     }
 
     @Override
