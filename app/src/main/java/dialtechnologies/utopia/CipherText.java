@@ -29,10 +29,10 @@ public class CipherText {
     // other Ciphertext to the prod Ciphertext. The prime specifies the group in
     // which these multiplication operations are to be performed.
     void MulCipherTexts(CipherText other, BigInteger prime){
-        this.alpha.multiply(other.alpha);
-        this.alpha.mod(prime);
-        this.beta.multiply(other.beta);
-        this.beta.mod(prime);
+        this.alpha = this.alpha.multiply(other.alpha);
+        this.alpha = this.alpha.mod(prime);
+        this.beta = this.beta.multiply(other.beta);
+        this.beta = this.beta.mod(prime);
     }
 
     @Override
