@@ -59,6 +59,42 @@ public class EncryptedAnswer {
     @JsonProperty("randomness")
     BigInteger randomness;
 
+    // VerifyAnswer checks the DisjunctiveZKProof values for a given
+    // EncryptedAnswer. It first checks each of the EncryptedAnswer.IndividualProof
+    // values to make sure it encodes either 0 or 1 (either that choice was voted
+    // for or not). Then it checks the OverallProof (if there is one) to make sure
+    // that the homomorphic sum of the ciphertexts is a value between min and max.
+    // If there is no OverallProof, then it makes sure that this is an approval
+    // question so that this last check doesn't matter.
+    Boolean VerifyAnswer(int Min,int Max, String ChoiceType, Key PublicKey){
+        CipherText prod = new CipherText(BigInteger.ONE, BigInteger.ONE);
+        for(int i = 0 ; i < choices.length; i++){
+            ZKProof[] proof = individual_proofs[i];
+            // Each answer can only be 0 or 1.
+            if(!VerifyDisjunctiveZKProof(proof, Min, Max, prod, PublicKey)){
+                System.out.println("The proof for choice " + i + " did not pass verification");
+                return Boolean.FALSE;
+            }
+            prod.MulCipherTexts(choices[i], PublicKey.p);
+        }
+        if(overall_proof.length == 0){
+            if(ChoiceType != "approval"){
+                System.out.println("Couldn't check a null overall proof");
+                return Boolean.FALSE;
+            }
+        }
+        else if(VerifyDisjunctiveZKProof(overall_proof, Min, Max, prod, PublicKey)){
+            System.out.println("The overall proof did not pass verification-specs");
+            return Boolean.FALSE;
+        }
+
+        return Boolean.TRUE;
+    }
+
+    Boolean VerifyDisjunctiveZKProof(ZKProof[] proof, int min, int max, CipherText prod, Key PublicKey){
+
+    }
+
     @Override
     public String toString() {
         return "{"
