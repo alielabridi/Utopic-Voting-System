@@ -5,6 +5,8 @@ import android.os.StrictMode;
 import android.support.v4.content.res.TypedArrayUtils;
 import android.test.ApplicationTestCase;
 
+import junit.framework.Assert;
+
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -13,6 +15,8 @@ import java.util.regex.Pattern;
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
  */
 public class ApplicationTest extends ApplicationTestCase<Application> {
+
+
     public ApplicationTest() {
         super(Application.class);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
