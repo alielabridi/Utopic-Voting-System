@@ -3,6 +3,7 @@ package dialtechnologies.utopia;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 
 /**
@@ -82,6 +83,25 @@ public class Election {
 
     @JsonProperty("voting_starts_at")
     String voting_starts_at;
+
+    void AccumulateTallies(CastBallot[] votes){
+        CipherText[][] tallies = new CipherText[questions.length][];
+        String[] fingerprints = new String[votes.length];
+        for(int i = 0; i < questions.length; i++){
+            tallies[i] = new CipherText[questions[i].answers.length];
+            for(int j = 0 ; j < questions[i].answers.length; j++){
+                // Each tally must start at 1 for the multiplicative
+                // homomorphism to work.
+                tallies[i][j].alpha = BigInteger.ONE;
+                tallies[i][j].beta = BigInteger.ONE;
+            }
+        }
+
+        // Verify the votes and accumulate the tallies.
+        for(CastBallot v : votes){
+
+        }
+    }
 
     @Override
     public String toString() {
