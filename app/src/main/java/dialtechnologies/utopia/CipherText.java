@@ -16,6 +16,8 @@ public class CipherText {
         this.beta = beta;
     }
 
+    public CipherText(){}
+
     // Alpha = g^r
     @JsonProperty("alpha")
     BigInteger alpha;
