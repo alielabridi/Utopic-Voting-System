@@ -4,8 +4,10 @@ package dialtechnologies.utopia;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigInteger;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 /**
  * Created by Ali Elabridi on 6/19/2017.
@@ -128,6 +130,79 @@ public class Election {
             return Boolean.FALSE;
         }
         return Boolean.TRUE;
+    }
+
+    // NewPartialDecryptionProof produces a proof of knowledge of a value x for
+    // a DDH tuple (g, g^x, g^R, g^xR).  g^R is the tallied ciphertext alpha value,
+    // g^xR is the partial decryption, and g^x is the public key of the trustee.
+    public ZKProof NewPartialDecryptionProof(CipherText cipherText, BigInteger decFactor, BigInteger secret, PublicKey key){
+        // Choose a random value w as the first message.
+        int w = new Random().nextInt()
+    }
+
+    // Tally computes the tally of an election and returns the result.
+    // In the process, it generates partial decryption proofs for each of
+    // the partial decryptions computed by the trustee.
+    public long [][] Tally(CastBallot[] votes, Trustee[] trustees, BigInteger[] trusteeSecrets){
+        if(fingerprints.size() == 0){
+            System.out.println("Couldn't tally the votes");
+            return null;
+        }
+        for(int t = 0; t < trustees.length; t++){
+            BigInteger[][] df = new BigInteger[questions.length][];
+            ZKProof[][] dp = new ZKProof[questions.length][];
+            for(int i = 0 ; i < questions.length; i++){
+                df[i] = new BigInteger[questions[i].answers.length];
+                dp[i] = new ZKProof[questions[i]. answers.length];
+                for(int j = 0 ; j < questions[i].answers.length; j++){
+                    df[i][j] = BigInteger.ONE.multiply(tallies[i][j].alpha).modPow(trusteeSecrets[t], trustees[t].public_key.p);
+                    //TODO: ENCRYPTION DECRIPTION PROOFS
+
+
+                }
+            }
+            trustees[t].decryption_factors = df;
+            trustees[t].decryption_proofs = dp;
+        }
+
+        // For each question and each answer, reassemble the tally and search for its value.
+        // Then put this in the results.
+        int maxValue = votes.length;
+        long result [][] = new long[questions.length][];
+        for(int i = 0 ; i < questions.length; i++){
+            result[i] = new long[questions[i].answers.length];
+            for(int j = 0 ; j < questions[i].answers.length;j++){
+                BigInteger alpha = BigInteger.ONE;
+                for(int t = 0 ; t < trustees.length; t++){
+                    alpha = alpha.multiply(trustees[t].decryption_factors[i][j]);
+                    alpha = alpha.mod(trustees[t].public_key.p);
+                }
+                BigInteger beta = BigInteger.ONE;
+                beta = alpha.modInverse(public_key.p);
+                beta = beta.multiply(tallies[i][j].beta);
+                beta = beta.mod(public_key.p);
+
+                // This decrypted value can be anything between g^0 and g^maxValue.
+                // Try all values until we find it.
+                BigInteger temp = BigInteger.ONE;
+                BigInteger val = BigInteger.ONE;
+                long v;
+                for(v = 0 ; v <= maxValue; v++){
+                    val = new BigInteger(Long.toString(v));
+                    temp = public_key.g.modPow(val, public_key.p);
+                    if(temp.compareTo(beta) == 0){
+                        result[i][j] = v;
+                        break;
+                    }
+                }
+                if(v > maxValue){
+                    System.out.println("Couldn't decrypt part of the tally value (" + i + ", " + j+ ")");
+                    return null;
+                }
+            }
+        }
+
+        return result;
     }
 
     @Override
