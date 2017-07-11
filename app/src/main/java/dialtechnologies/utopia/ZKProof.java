@@ -38,6 +38,12 @@ public class ZKProof {
     @JsonProperty("response")
     BigInteger response;
 
+    public ZKProof(BigInteger challenge, Commit commitment, BigInteger response) {
+        this.challenge = challenge;
+        this.commitment = commitment;
+        this.response = response;
+    }
+
     // Verify checks the Chaum-Pedersen zero-knowledge proof for the
     // well-formedness of a Ciphertext, given the purported plaintext and the public
     // key. Note that a ZKProof might pass verification and yet be a simulated (i.e.,

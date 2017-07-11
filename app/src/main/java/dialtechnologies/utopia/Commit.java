@@ -12,6 +12,11 @@ public class Commit {
     // prove knowledge of a value r, the prover first commits to a random value w
     // by sending an instance of a Commit.
 
+    public Commit(BigInteger a, BigInteger b) {
+        A = a;
+        B = b;
+    }
+
     // A is the first part of a commitment: A = g^w mod p.
     @JsonProperty("A")
     BigInteger A;
