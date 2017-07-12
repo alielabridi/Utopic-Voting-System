@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Vector;
 
+import static dialtechnologies.utopia.SchnorrProof.NewSchnorrProof;
+
 /**
  * Created by Ali on 6/21/2017.
  */
@@ -166,10 +168,19 @@ public class ElectionBundle {
         BigInteger sum = BigInteger.ZERO;
         for(int i = 0; i < n - 1; i++){
             keys[i] = BigInteger.valueOf(new Random().nextInt(publicKey.q.intValue()));
-            SchnorrProof pok = n
-
+            SchnorrProof pok = NewSchnorrProof(keys[i], publicKey);
+            Key tpk = new Key(publicKey.g, publicKey.p, publicKey.q, publicKey.g.modPow(keys[i], publicKey.p));
+            Trustees[i] = new Trustee(pok, tpk);
+            sum = sum.add(keys[i]);
+            sum = sum.mod(publicKey.q);
         }
-
+        // The choice of random private keys in the loop fully determines the
+        // final key.
+        keys[n-1] = privateKey.subtract(sum);
+        keys[n-1] = keys[n-1].mod(publicKey.q);
+        SchnorrProof npok = NewSchnorrProof(keys[n - 1], publicKey);
+        Key ntpk = new Key(publicKey.g, publicKey.p, publicKey.q, publicKey.g.modPow(keys[n-1], publicKey.p));
+        Trustees[n-1] = new Trustee(npok, ntpk);
     }
 
 
