@@ -33,6 +33,13 @@ public class Key {
     @JsonProperty("y")
     BigInteger y;
 
+    public Key(BigInteger g, BigInteger p, BigInteger q, BigInteger y) {
+        this.g = g;
+        this.p = p;
+        this.q = q;
+        this.y = y;
+    }
+
     @Override
     public String toString() {
         return "{"
