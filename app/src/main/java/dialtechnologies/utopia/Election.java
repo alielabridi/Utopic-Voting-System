@@ -4,9 +4,7 @@ package dialtechnologies.utopia;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigInteger;
-import java.security.PublicKey;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -139,10 +137,8 @@ public class Election {
         // Choose a random value w as the first message.
         int w = new Random().nextInt(key.q.intValue());
         // Commit to w with A = g^w, B = alpha^w.
-        BigInteger A = BigInteger.ONE;
-        BigInteger B = BigInteger.ONE;
-        A = key.q.modPow(new BigInteger(Integer.toString(w)), key.p);
-        B = key.q.modPow(cipherText.alpha, key.p);
+        BigInteger A = key.q.modPow(new BigInteger(Integer.toString(w)), key.p);
+        BigInteger B = key.q.modPow(cipherText.alpha, key.p);
         Commit com = new Commit(A,B);
 
         // Compute the challenge using SHA1
@@ -162,6 +158,7 @@ public class Election {
     // In the process, it generates partial decryption proofs for each of
     // the partial decryptions computed by the trustee.
     public long [][] Tally(CastBallot[] votes, Trustee[] trustees, BigInteger[] trusteeSecrets){
+        AccumulateTallies(votes);
         if(fingerprints.size() == 0){
             System.out.println("Couldn't tally the votes");
             return null;
@@ -193,15 +190,14 @@ public class Election {
                     alpha = alpha.multiply(trustees[t].decryption_factors[i][j]);
                     alpha = alpha.mod(trustees[t].public_key.p);
                 }
-                BigInteger beta = BigInteger.ONE;
-                beta = alpha.modInverse(public_key.p);
+                BigInteger beta = alpha.modInverse(public_key.p);
                 beta = beta.multiply(tallies[i][j].beta);
                 beta = beta.mod(public_key.p);
 
                 // This decrypted value can be anything between g^0 and g^maxValue.
                 // Try all values until we find it.
-                BigInteger temp = BigInteger.ONE;
-                BigInteger val = BigInteger.ONE;
+                BigInteger temp;
+                BigInteger val;
                 long v;
                 for(v = 0 ; v <= maxValue; v++){
                     val = new BigInteger(Long.toString(v));
