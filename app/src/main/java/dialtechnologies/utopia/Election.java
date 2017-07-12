@@ -135,9 +135,27 @@ public class Election {
     // NewPartialDecryptionProof produces a proof of knowledge of a value x for
     // a DDH tuple (g, g^x, g^R, g^xR).  g^R is the tallied ciphertext alpha value,
     // g^xR is the partial decryption, and g^x is the public key of the trustee.
-    public ZKProof NewPartialDecryptionProof(CipherText cipherText, BigInteger decFactor, BigInteger secret, PublicKey key){
+    public ZKProof NewPartialDecryptionProof(CipherText cipherText, BigInteger decFactor, BigInteger secret, Key key){
         // Choose a random value w as the first message.
-        int w = new Random().nextInt()
+        int w = new Random().nextInt(key.q.intValue());
+        // Commit to w with A = g^w, B = alpha^w.
+        BigInteger A = BigInteger.ONE;
+        BigInteger B = BigInteger.ONE;
+        A = key.q.modPow(new BigInteger(Integer.toString(w)), key.p);
+        B = key.q.modPow(cipherText.alpha, key.p);
+        Commit com = new Commit(A,B);
+
+        // Compute the challenge using SHA1
+        String stringToHash = com.A.toString() + "," + com.B.toString();
+        byte[] hashedChall = org.apache.commons.codec.digest.DigestUtils.sha1(stringToHash.getBytes());
+        BigInteger chall = new BigInteger(hashedChall);
+
+        // response = w + challenge * secret
+        BigInteger resp = chall.multiply(secret);
+        resp = resp.add(new BigInteger(Integer.toString(w)));
+        resp = resp.mod(key.q);
+        return new ZKProof(chall, com, resp);
+
     }
 
     // Tally computes the tally of an election and returns the result.
@@ -156,9 +174,7 @@ public class Election {
                 dp[i] = new ZKProof[questions[i]. answers.length];
                 for(int j = 0 ; j < questions[i].answers.length; j++){
                     df[i][j] = BigInteger.ONE.multiply(tallies[i][j].alpha).modPow(trusteeSecrets[t], trustees[t].public_key.p);
-                    //TODO: ENCRYPTION DECRIPTION PROOFS
-
-
+                    dp[i][j] = NewPartialDecryptionProof(tallies[i][j],df[i][j],trusteeSecrets[t],trustees[t].public_key);
                 }
             }
             trustees[t].decryption_factors = df;
