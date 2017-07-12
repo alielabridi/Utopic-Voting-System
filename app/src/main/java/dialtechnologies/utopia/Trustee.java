@@ -47,6 +47,11 @@ public class Trustee {
     @JsonProperty("uuid")
     String uuid;
 
+    public Trustee(SchnorrProof pok, Key public_key) {
+        this.pok = pok;
+        this.public_key = public_key;
+    }
+
     @Override
     public String toString() {
         return "{"
