@@ -9,10 +9,12 @@ import org.apache.commons.io.IOUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
+import java.math.BigInteger;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.Vector;
 
 /**
@@ -39,6 +41,9 @@ public class ElectionBundle {
     String Uuid = "";
     String ElecAddr = Host + Uuid;
 
+    //will store the trustees keys (we should implement a way of getting it from users)
+    ArrayList<BigInteger> TrusteesKeys;
+
     public ElectionBundle(String Host, String Uuid) {
         Voters = new ArrayList<>();
         Votes = new ArrayList<>();
@@ -47,6 +52,7 @@ public class ElectionBundle {
         this.Host = Host;
         this.Uuid = Uuid;
         this.ElecAddr = this.Host + this.Uuid;
+        this.TrusteesKeys = new ArrayList<>();
         Download();
     }
 
@@ -143,6 +149,26 @@ public class ElectionBundle {
         }
 
 
+
+    }
+
+
+
+    // SplitKey performs an (n,n)-secret sharing of privateKey over addition mod
+    // publicKey.ExponentPrime.
+    public void splitKey(BigInteger privateKey, Key publicKey, int n){
+        // Choose n-1 random private keys and compute the nth as privateKey -
+        // (key_1 + key_2 + ... + key_{n-1}). This computation must be
+        // performed in the exponent group of g, which is
+        // Z_{Key.ExponentPrime}.
+        Trustees = new Trustee[n];
+        BigInteger[] keys = new BigInteger[n];
+        BigInteger sum = BigInteger.ZERO;
+        for(int i = 0; i < n - 1; i++){
+            keys[i] = BigInteger.valueOf(new Random().nextInt(publicKey.q.intValue()));
+            SchnorrProof pok = n
+
+        }
 
     }
 
