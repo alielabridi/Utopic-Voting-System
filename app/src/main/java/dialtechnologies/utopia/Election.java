@@ -217,6 +217,66 @@ public class Election {
         return result;
     }
 
+    // Retally checks the proofs for a purported Election Result, given the partial
+    // decryption proofs from the Trustee data, and given a list of CastBallot
+    // values that were used in the tally. It recomputes the encrypted tally value
+    // homomorphically, checking the ZKProof values for each CastBallot, and checks
+    // the partial decryption proofs for each partial decryption that goes into the
+    // tally computation. It then checks the purported tally value in the Result by
+    // exponentiating the Election.PublicKey.Generator value with this value and
+    // checking that it matches the decrypted value.
+    public Boolean Retally(CastBallot[] votes, long[][] result, Trustee[] trustees){
+        AccumulateTallies(votes);
+        if(fingerprints.size() == 0){
+            System.out.println("Some votes didn't pass verification");
+            return Boolean.FALSE;
+        }
+        System.out.println("All cast ballots pass verification");
+        if(result.length != questions.length){
+            System.out.println("The results do not contain the right number of answers");
+            System.out.println("Maybe the election hasn't closed yet?");
+            return Boolean.FALSE;
+        }
+        System.out.println("Checking the final tally");
+        for(int i = 0; i < questions.length;i++){
+            if(result[i].length != questions[i].answers.length){
+                System.out.println("The results for question "+ i +" don't have the right length");
+                return Boolean.FALSE;
+            }
+            for(int j = 0; j < questions[i].answers.length; j++){
+                BigInteger decFactorCombination = BigInteger.ONE;
+                for(int t = 0 ; t < trustees.length; t++){
+                    if(!trustees[t].decryption_proofs[i][j].verify(tallies[i][j], trustees[t].decryption_factors[i][j], trustees[t].public_key)){
+                        System.out.println("The partial decryption proof for "+ i + " " + j + " failed");
+                        return Boolean.FALSE;
+                    }
+                    // Combine this partial decryption using the
+                    // homomorphism.
+                    decFactorCombination = decFactorCombination.multiply(trustees[t].decryption_factors[i][j]);
+                }
+                // Contrary to how it's written in the published spec,
+                // the result must be represented as g^m rather than m,
+                // since everything is done in exponential ElGamal.
+                BigInteger bigResult = new BigInteger(Long.toString(result[i][j]));
+                bigResult = public_key.g.modPow(bigResult, public_key.p);
+                // (decFactorCombination * bigResult) mod p
+                BigInteger lhs = decFactorCombination.multiply(bigResult);
+                lhs = lhs.mod(public_key.p);
+
+                // tally_i_j.Beta mod p
+                BigInteger rhs = tallies[i][j].beta.mod(public_key.p);
+                // These should match if the combination of the partial
+                // decryptions was correct.
+                if(!lhs.equals(rhs)){
+                    System.out.println("The decryption factor check failed for question " + i + " and answer " + j);
+                    return Boolean.FALSE;
+                }
+
+            }
+        }
+        return Boolean.TRUE;
+    }
+
     @Override
     public String toString() {
         return "{"
