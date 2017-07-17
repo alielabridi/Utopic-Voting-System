@@ -7,6 +7,7 @@ import android.test.ApplicationTestCase;
 
 import junit.framework.Assert;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,7 +23,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         System.out.println("lets see");
-        ElectionBundle electionBundle = new ElectionBundle("https://vote.heliosvoting.org/helios/elections/","c2786390-5056-11e7-9e2a-c65269258371");
+        ElectionBundle electionBundle = new ElectionBundle("https://vote.heliosvoting.org/helios/elections/","b167b236-6adc-11e7-aa68-1e7085784231");
         //System.out.println("length" + electionBundle.ElectionData.length);
         System.out.println(electionBundle.Election);
         System.out.println(electionBundle.Voters);
@@ -93,6 +94,18 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         System.out.println(NullValsWithoutQuotesFromParsedJson);
         assertEquals(BigIntsWithoutQuotesFromJson, NullValsWithoutQuotesFromParsedJson);
         System.out.println(BigIntsWithoutQuotesFromJson.equals(NullValsWithoutQuotesFromParsedJson));
+
+
+        electionBundle.TrusteesKeys.add(new BigInteger("15739083839219391017396159409817659345345764985861185270241637928388639832263"));
+        CastBallot[] votes = new CastBallot[electionBundle.Votes.size()];
+        votes = electionBundle.Votes.toArray(votes);
+        BigInteger[] trusteeskeys = new BigInteger[electionBundle.TrusteesKeys.size()];
+        trusteeskeys = electionBundle.TrusteesKeys.toArray(trusteeskeys);
+        long [][] answers = electionBundle.Election.Tally(votes, electionBundle.Trustees, trusteeskeys);
+        System.out.println("the result of the election:");
+        for(i = 0 ; i < answers.length; i++)
+            for(int j = 0 ; j < answers[i].length ;j++)
+                System.out.println("Question " + i + " Answer " + j);
     }
 
 }

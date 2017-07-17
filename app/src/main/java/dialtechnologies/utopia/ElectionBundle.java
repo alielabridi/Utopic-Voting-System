@@ -60,7 +60,7 @@ public class ElectionBundle {
 
     void Download(){
         ObjectMapper mapper = new ObjectMapper();
-        System.out.println(ElecAddr);
+        System.out.println("election information link" + ElecAddr);
         try {
             InputStream electStream =  new URL(ElecAddr).openStream();
             ElectionData = IOUtils.toByteArray(electStream);
