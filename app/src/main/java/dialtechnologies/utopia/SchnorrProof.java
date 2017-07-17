@@ -32,6 +32,10 @@ public class SchnorrProof {
         this.commitment = commitment;
         this.response = response;
     }
+
+    public SchnorrProof() {
+    }
+
     // NewSchnorrProof proves knowledge of a secret exponent in a cyclic group defined
     // by an ElGamal public key.
     public static SchnorrProof NewSchnorrProof(BigInteger secret, Key publicKey){

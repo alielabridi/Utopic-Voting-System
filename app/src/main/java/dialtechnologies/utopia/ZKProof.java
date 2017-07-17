@@ -44,6 +44,9 @@ public class ZKProof {
         this.response = response;
     }
 
+    public ZKProof() {
+    }
+
     // Verify checks the Chaum-Pedersen zero-knowledge proof for the
     // well-formedness of a Ciphertext, given the purported plaintext and the public
     // key. Note that a ZKProof might pass verification and yet be a simulated (i.e.,

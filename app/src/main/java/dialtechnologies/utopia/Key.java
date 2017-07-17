@@ -40,6 +40,9 @@ public class Key {
         this.y = y;
     }
 
+    public Key() {
+    }
+
     @Override
     public String toString() {
         return "{"
