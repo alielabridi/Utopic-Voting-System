@@ -23,7 +23,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         System.out.println("lets see");
-        ElectionBundle electionBundle = new ElectionBundle("https://vote.heliosvoting.org/helios/elections/","b167b236-6adc-11e7-aa68-1e7085784231");
+        ElectionBundle electionBundle = new ElectionBundle("https://vote.heliosvoting.org/helios/elections/","be0efa52-346c-4d7d-9cc1-4079121029dd");
         //System.out.println("length" + electionBundle.ElectionData.length);
         System.out.println(electionBundle.Election);
         System.out.println(electionBundle.Voters);
@@ -96,7 +96,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         System.out.println(BigIntsWithoutQuotesFromJson.equals(NullValsWithoutQuotesFromParsedJson));
 
 
-        electionBundle.TrusteesKeys.add(new BigInteger("15739083839219391017396159409817659345345764985861185270241637928388639832263"));
+        electionBundle.TrusteesKeys.add(new BigInteger("40422615007634483127913683991626255092274610801646962694074725979045158626938"));
         CastBallot[] votes = new CastBallot[electionBundle.Votes.size()];
         votes = electionBundle.Votes.toArray(votes);
         BigInteger[] trusteeskeys = new BigInteger[electionBundle.TrusteesKeys.size()];
