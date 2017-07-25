@@ -129,7 +129,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
     }
 
     @Test
-    public void testingElectionTallying() {
+    public void testingElectionTallyingandRetallying() {
         CastBallot[] votes = new CastBallot[electionBundle.Votes.size()];
         votes = electionBundle.Votes.toArray(votes);
         BigInteger[] trusteeskeys = new BigInteger[electionBundle.TrusteesKeys.size()];
