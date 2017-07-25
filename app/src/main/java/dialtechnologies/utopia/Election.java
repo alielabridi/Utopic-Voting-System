@@ -98,8 +98,7 @@ public class Election {
             for(int j = 0 ; j < questions[i].answers.length; j++){
                 // Each tally must start at 1 for the multiplicative
                 // homomorphism to work.
-                tallies[i][j].alpha = BigInteger.ONE;
-                tallies[i][j].beta = BigInteger.ONE;
+                tallies[i][j] = new CipherText(BigInteger.ONE, BigInteger.ONE);
             }
         }
         /*do the parralelzation here!!!*/
@@ -135,7 +134,7 @@ public class Election {
     // g^xR is the partial decryption, and g^x is the public key of the trustee.
     public ZKProof NewPartialDecryptionProof(CipherText cipherText, BigInteger decFactor, BigInteger secret, Key key){
         // Choose a random value w as the first message.
-        int w = new Random().nextInt(key.q.intValue());
+        int w = new Random().nextInt(java.lang.Math.abs(key.q.intValue()));
         // Commit to w with A = g^w, B = alpha^w.
         BigInteger A = key.q.modPow(new BigInteger(Integer.toString(w)), key.p);
         BigInteger B = key.q.modPow(cipherText.alpha, key.p);
