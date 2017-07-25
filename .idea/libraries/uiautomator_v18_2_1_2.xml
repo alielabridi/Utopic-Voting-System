@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="uiautomator-v18-2.1.2">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.android/build-cache/38b86c85bcf94b658942d3d04495976ca3a741b4/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/38b86c85bcf94b658942d3d04495976ca3a741b4/output/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/AppData/Local/Android/sdk/extras/android/m2repository/com/android/support/test/uiautomator/uiautomator-v18/2.1.2/uiautomator-v18-2.1.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
