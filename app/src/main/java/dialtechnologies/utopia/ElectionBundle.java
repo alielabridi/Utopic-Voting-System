@@ -132,6 +132,11 @@ public class ElectionBundle {
             Votes.add(vote);
             for(int i = 0 ; i < jsonData.length ;i++)
                 VotesData.add(jsonData[i]);
+            //add ", " to the VotesData bytes to compare it as it will be aggregated to an array
+            byte[] addcommaspace = ", ".getBytes();
+            for(int i = 0 ; i < addcommaspace.length;i++)
+                VotesData.add(addcommaspace[i]);
+
         }
 
         System.out.println("Collected " + Votes.size() + " cast ballots for the retally");
