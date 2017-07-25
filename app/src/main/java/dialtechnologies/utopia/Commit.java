@@ -17,6 +17,9 @@ public class Commit {
         B = b;
     }
 
+    public Commit() {
+    }
+
     // A is the first part of a commitment: A = g^w mod p.
     @JsonProperty("A")
     BigInteger A;
