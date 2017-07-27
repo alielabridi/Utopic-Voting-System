@@ -126,7 +126,7 @@ public class ElectionBundle {
             }
 
             // Skip ballots that weren't ever cast.
-            if(vote.cast_at.length() == 0) continue;
+            if(vote.cast_at == null || vote.cast_at.length() == 0) continue;
 
             vote.JSON = jsonData;
             Votes.add(vote);

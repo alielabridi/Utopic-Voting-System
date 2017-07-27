@@ -36,13 +36,13 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         super.setUp();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        electionBundle = new ElectionBundle("https://heliosvoting.org/helios/elections/", "5f4a8c8c-7066-11e7-8705-2234bf8d34d5");
+        electionBundle = new ElectionBundle("https://heliosvoting.org/helios/elections/", "74c3fd60-729f-11e7-80cc-42d290df378a");
         //add any secret key of the trustees here to start the tallying unit testing
-        electionBundle.TrusteesKeys.add(new BigInteger("1529424607530842589025295693753700729476581294063623307018152227361884367919"));
+        electionBundle.TrusteesKeys.add(new BigInteger("19298544594001622140176447051156515829139477380272983391344995131090972624090"));
         //the known answer to perform the unit test
         predictedResult = new long[2][];
-        predictedResult[0] = new long[]{2, 1, 1};
-        predictedResult[1] = new long[]{1, 1, 2};
+        predictedResult[0] = new long[]{2, 0};
+        predictedResult[1] = new long[]{0, 1, 1};
 
         System.out.println(electionBundle.Election);
         System.out.println(electionBundle.Voters);
@@ -149,10 +149,5 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         Boolean retallyingResult = electionBundle.Election.Retally(votes, predictedResult, electionBundle.Trustees);
         assertTrue(matchingResult && retallyingResult);
     }
-
-    public void testingElectionRetallying() {
-        CastBallot[] votes = new CastBallot[electionBundle.Votes.size()];
-        votes = electionBundle.Votes.toArray(votes);
-        assertTrue(electionBundle.Election.Retally(votes, predictedResult, electionBundle.Trustees));
-    }
+    
 }
